@@ -7,7 +7,6 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// Назар аударыңыз: struct аты кіші әріппен "userRepository"
 type userRepository struct {
 	pool *pgxpool.Pool
 }
@@ -17,8 +16,6 @@ func NewUserRepository(pool *pgxpool.Pool) UserRepository {
 }
 
 func (r *userRepository) Create(ctx context.Context, email, passwordHash, name string) (int64, error) {
-	// Мұнда сіздің нақты SQL немесе sqlc кодыңыз болады
-	// Мысалы:
 	var id int64
 	err := r.pool.QueryRow(ctx, "INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id", email, passwordHash, name).Scan(&id)
 	return id, err

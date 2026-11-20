@@ -1,30 +1,24 @@
-# Build stage
-FROM golang:1.21-alpine AS builder
+FROM golang:1.26-alpine AS builder
 
 WORKDIR /app
 
-# Copy dependency files
+# 1. Тек go.mod және go.sum көшіреміз
 COPY go.mod go.sum ./
+
+# 2. Пакеттерді жүктейміз (бұл файлдарды өзгертпейді, тек жүктейді)
 RUN go mod download
 
-# Copy source code
+# 3. Кодты көшіріп, жинаймыз
 COPY . .
-
-# Build the application
 RUN go build -o main cmd/api/main.go
 
-# Final stage
 FROM alpine:latest
 
 WORKDIR /app
 
-# Copy the binary
 COPY --from=builder /app/main .
 COPY --from=builder /app/db ./db
-COPY --from=builder /app/configs ./configs
 
-# Expose port
 EXPOSE 8080
 
-# Run the application
 CMD ["./main"]

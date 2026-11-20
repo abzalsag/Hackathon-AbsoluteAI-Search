@@ -29,19 +29,14 @@ func NewAnalysisService(
 }
 
 func (s *AnalysisService) CreateAnalysis(ctx context.Context, userID, companyID int64) (int64, error) {
-	// 1. Компания деректерін алу
 	company, err := s.companyRepo.GetByID(ctx, companyID)
 	if err != nil {
 		return 0, fmt.Errorf("компания табылмады: %w", err)
 	}
-
-	// 2. Анализ жазбасын 'pending' статусымен жасау
 	analysisID, err := s.analysisRepo.Create(ctx, userID, companyID, "pending")
 	if err != nil {
 		return 0, err
 	}
-
-	// 3. Асинхронды түрде AI сервисін шақыру (Goroutine)
 	go s.processAnalysisAsync(analysisID, company)
 
 	return analysisID, nil
@@ -49,11 +44,7 @@ func (s *AnalysisService) CreateAnalysis(ctx context.Context, userID, companyID 
 
 func (s *AnalysisService) processAnalysisAsync(analysisID int64, company *models.Company) {
 	ctx := context.Background()
-
-	// Статусты 'processing' деп өзгерту
 	_ = s.analysisRepo.UpdateStatus(ctx, analysisID, "processing")
-
-	// AI клиентіне сұраныс жіберу
 	req := ai_client.AnalysisRequest{
 		CompanyID:   company.ID,
 		Name:        company.Name,
@@ -63,16 +54,12 @@ func (s *AnalysisService) processAnalysisAsync(analysisID int64, company *models
 
 	result, err := s.aiClient.Analyze(ctx, req)
 	if err != nil {
-		// Қате болса, статус 'failed'
 		_ = s.analysisRepo.UpdateStatus(ctx, analysisID, "failed")
 		return
 	}
-
-	// Нәтижені JSON форматына түрлендіру
 	resultJSON, _ := json.Marshal(result)
 	resultStr := string(resultJSON)
 
-	// Статусты 'completed' деп өзгертіп, нәтижені сақтау
 	_ = s.analysisRepo.UpdateResult(ctx, analysisID, "completed", &resultStr)
 }
 

@@ -11,13 +11,10 @@ import (
 )
 
 func TestClient_Analyze(t *testing.T) {
-	// Mock HTTP сервер
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "/internal/analyze", r.URL.Path)
 		assert.Equal(t, http.MethodPost, r.Method)
 		assert.Equal(t, "application/json", r.Header.Get("Content-Type"))
-
-		// Mock жауап
 		response := AnalysisResponse{
 			VisibilityScore: 75.5,
 			Competitors: []CompetitorResult{
@@ -63,7 +60,6 @@ func TestClient_Analyze(t *testing.T) {
 }
 
 func TestClient_Analyze_Error(t *testing.T) {
-	// Mock HTTP сервер (500 қате)
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 	}))

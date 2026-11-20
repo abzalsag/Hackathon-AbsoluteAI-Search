@@ -10,7 +10,7 @@ import (
 )
 
 type CompanyHandler struct {
-	companyService service.CompanyServiceInterface // Интерфейс
+	companyService service.CompanyServiceInterface
 }
 
 func NewCompanyHandler(companyService service.CompanyServiceInterface) *CompanyHandler {
@@ -19,9 +19,7 @@ func NewCompanyHandler(companyService service.CompanyServiceInterface) *CompanyH
 	}
 }
 
-// GetCompanies GET /api/companies
 func (h *CompanyHandler) GetCompanies(w http.ResponseWriter, r *http.Request) {
-	// Middleware-тен userID алу
 	userID, ok := r.Context().Value("user_id").(int64)
 	if !ok {
 		http.Error(w, `{"error":"Қолданушы ID табылмады"}`, http.StatusUnauthorized)
@@ -41,7 +39,6 @@ func (h *CompanyHandler) GetCompanies(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// CreateCompany POST /api/companies
 func (h *CompanyHandler) CreateCompany(w http.ResponseWriter, r *http.Request) {
 	userID, ok := r.Context().Value("user_id").(int64)
 	if !ok {
@@ -80,9 +77,7 @@ func (h *CompanyHandler) CreateCompany(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// GetCompany GET /api/companies/{id}
 func (h *CompanyHandler) GetCompany(w http.ResponseWriter, r *http.Request) {
-	// URL-ден ID алу (Go 1.22+ routing)
 	idStr := r.PathValue("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
@@ -101,7 +96,6 @@ func (h *CompanyHandler) GetCompany(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(company)
 }
 
-// UpdateCompany PUT /api/companies/{id}
 func (h *CompanyHandler) UpdateCompany(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
@@ -133,7 +127,6 @@ func (h *CompanyHandler) UpdateCompany(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// DeleteCompany DELETE /api/companies/{id}
 func (h *CompanyHandler) DeleteCompany(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)

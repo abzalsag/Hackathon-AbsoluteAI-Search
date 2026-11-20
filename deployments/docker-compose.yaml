@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   # PostgreSQL Database
@@ -26,16 +26,14 @@ services:
       dockerfile: deployments/Dockerfile
     container_name: ai_search_backend
     ports:
-      - "8080:8080"
+      - "8088:8080"
     env_file:
       - ../.env
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ../:/app
     # Егер Docker ішінде go run қолданғың келсе:
-    command: ["go", "run", "cmd/api/main.go"]
+    command: ["./main"]
 
   # Python AI Service
   ai-service:

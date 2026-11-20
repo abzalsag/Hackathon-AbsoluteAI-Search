@@ -29,7 +29,6 @@ func TestCompanyService_CreateCompany(t *testing.T) {
 	})
 
 	t.Run("Database қатесі", func(t *testing.T) {
-		// ⚠ Жаңа mock — success expectation мұнда жоқ
 		mockCompanyRepo := new(mocks.MockCompanyRepository)
 		svc := service.NewCompanyService(mockCompanyRepo)
 
