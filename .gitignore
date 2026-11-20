@@ -7,3 +7,10 @@ bin/
 *.test
 *.out
 vendor/
+.env.*
+!.env.example
+
+__pycache__/
+*.pyc
+.venv/
+venv/
