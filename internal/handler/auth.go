@@ -8,7 +8,7 @@ import (
 )
 
 type AuthHandler struct {
-	authService service.AuthServiceInterface // Интерфейс
+	authService service.AuthServiceInterface
 }
 
 func NewAuthHandler(authService service.AuthServiceInterface) *AuthHandler {
@@ -17,7 +17,6 @@ func NewAuthHandler(authService service.AuthServiceInterface) *AuthHandler {
 	}
 }
 
-// Register POST /api/auth/register
 func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Email    string `json:"email"`
@@ -50,7 +49,6 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// Login POST /api/auth/login
 func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Email    string `json:"email"`

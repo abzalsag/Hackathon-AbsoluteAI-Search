@@ -17,7 +17,6 @@ func (rw *responseWriter) WriteHeader(code int) {
 	rw.ResponseWriter.WriteHeader(code)
 }
 
-// <-- *log.Logger орнына *logger.Logger қолданылды
 func LoggerMiddleware(next http.Handler, logger *logger.Logger) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
@@ -25,7 +24,6 @@ func LoggerMiddleware(next http.Handler, logger *logger.Logger) http.Handler {
 
 		next.ServeHTTP(rw, r)
 
-		// Сіздің logger пакетіңізде Infof немесе Printf бар деп есептейміз
 		logger.Infof("%s %s %d %s",
 			r.Method,
 			r.URL.Path,

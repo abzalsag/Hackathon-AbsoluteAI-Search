@@ -8,7 +8,7 @@ import (
 )
 
 type CompanyService struct {
-	companyRepo repository.CompanyRepository // Интерфейс
+	companyRepo repository.CompanyRepository
 }
 
 func NewCompanyService(companyRepo repository.CompanyRepository) *CompanyService {

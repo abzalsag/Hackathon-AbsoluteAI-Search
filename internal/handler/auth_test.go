@@ -13,7 +13,6 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// Mock AuthService
 type MockAuthService struct {
 	mock.Mock
 }
@@ -32,7 +31,6 @@ func TestAuthHandler_Register(t *testing.T) {
 	mockService := new(MockAuthService)
 	h := handler.NewAuthHandler(mockService)
 
-	// RegisterRequest орнына тікелей JSON қолданамыз
 	reqBody := `{"email":"test@test.com", "password":"123456", "name":"Test User"}`
 	req := httptest.NewRequest(http.MethodPost, "/api/auth/register", bytes.NewBufferString(reqBody))
 	req.Header.Set("Content-Type", "application/json")
@@ -49,8 +47,6 @@ func TestAuthHandler_Register(t *testing.T) {
 func TestAuthHandler_Login(t *testing.T) {
 	mockService := new(MockAuthService)
 	h := handler.NewAuthHandler(mockService)
-
-	// LoginRequest орнына тікелей JSON қолданамыз
 	reqBody := `{"email":"test@test.com", "password":"123456"}`
 	req := httptest.NewRequest(http.MethodPost, "/api/auth/login", bytes.NewBufferString(reqBody))
 	req.Header.Set("Content-Type", "application/json")

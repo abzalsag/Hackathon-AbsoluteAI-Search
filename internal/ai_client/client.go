@@ -9,28 +9,24 @@ import (
 	"time"
 )
 
-// 1. Интерфейс (Service осыны күтеді)
 type Client interface {
 	Analyze(ctx context.Context, req AnalysisRequest) (*AnalysisResponse, error)
 }
 
-// 2. Нақты реализация (HTTP клиент)
 type httpClient struct {
 	baseURL    string
 	httpClient *http.Client
 }
 
-// 3. Конструктор интерфейс қайтарады
 func NewClient(baseURL string) Client {
 	return &httpClient{
 		baseURL: baseURL,
 		httpClient: &http.Client{
-			Timeout: 60 * time.Second, // AI анализі ұзақ уақыт алуы мүмкін
+			Timeout: 60 * time.Second,
 		},
 	}
 }
 
-// 4. Интерфейсті имплементациялау
 func (c *httpClient) Analyze(ctx context.Context, req AnalysisRequest) (*AnalysisResponse, error) {
 	url := fmt.Sprintf("%s/internal/analyze", c.baseURL)
 
@@ -62,10 +58,6 @@ func (c *httpClient) Analyze(ctx context.Context, req AnalysisRequest) (*Analysi
 
 	return &result, nil
 }
-
-// ==========================================================
-// 5. Struct-тар (Міне, осылар "undefined" болып тұрған еді)
-// ==========================================================
 
 type AnalysisRequest struct {
 	CompanyID   int64  `json:"company_id"`

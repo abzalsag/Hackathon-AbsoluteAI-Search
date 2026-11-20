@@ -19,7 +19,6 @@ func NewAnalysisHandler(analysisService service.AnalysisServiceInterface) *Analy
 	}
 }
 
-// CreateAnalysis POST /api/analyses
 func (h *AnalysisHandler) CreateAnalysis(w http.ResponseWriter, r *http.Request) {
 	userID, ok := r.Context().Value("user_id").(int64)
 	if !ok {
@@ -57,7 +56,6 @@ func (h *AnalysisHandler) CreateAnalysis(w http.ResponseWriter, r *http.Request)
 	})
 }
 
-// GetAnalysis GET /api/analyses/{id}
 func (h *AnalysisHandler) GetAnalysis(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)

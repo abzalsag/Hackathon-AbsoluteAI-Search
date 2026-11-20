@@ -14,7 +14,6 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// Mock Company Service
 type MockCompanyService struct {
 	mock.Mock
 }
@@ -39,7 +38,6 @@ func (m *MockCompanyService) UpdateCompany(ctx context.Context, id int64, name, 
 	return args.Error(0)
 }
 
-// DeleteCompany методын қостық!
 func (m *MockCompanyService) DeleteCompany(ctx context.Context, id int64) error {
 	args := m.Called(ctx, id)
 	return args.Error(0)
@@ -49,12 +47,10 @@ func TestCompanyHandler_CreateCompany(t *testing.T) {
 	mockService := new(MockCompanyService)
 	h := handler.NewCompanyHandler(mockService)
 
-	// CreateCompanyRequest орнына тікелей JSON қолданамыз
 	reqBody := `{"name":"My Startup", "website":"https://test.com", "description":"AI startup"}`
 	req := httptest.NewRequest(http.MethodPost, "/api/companies", bytes.NewBufferString(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 
-	// Middleware-тен келетін user_id-ні контекстке қосамыз
 	ctx := context.WithValue(req.Context(), "user_id", int64(1))
 	req = req.WithContext(ctx)
 
